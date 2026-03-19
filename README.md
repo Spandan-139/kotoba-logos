@@ -142,4 +142,4 @@ kotoba-logos/
 
 ---
 
-*Built under [Kotoba](https://github.com/YOUR_USERNAME)*
+*Built under [Kotoba](https://github.com/Spandan-139)*
