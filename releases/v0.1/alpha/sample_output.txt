@@ -1,27 +1,28 @@
-# Sample output — Logos v0.1.0-alpha
+# Sample output — Logos v0.1-alpha
 # Model: MiniTransformerLM (character-level decoder-only Transformer)
 # Dataset: Tiny Shakespeare (1,115,394 chars)
 # Parameters: 2,715,713
+# Sampling: greedy multinomial (no temperature / top-k)
 # Generated tokens: 500
-
+ 
 CLARENCE:
 Ah, see how it is no fearful an reverage!
 Touch's unto amen so happiness, sir, if you are did.
-
+ 
 TYBALT:
 No, love, still hand's far a smalliabless;
 I are so muter with his thins heir;
 For sucry thus goes himself, velute! O God!
-
+ 
 ELBOW:
 She trespast love, by a good taggerous sonarer
 Is nothing; that 'twasting for cit?
-
+ 
 CLIFFORD:
 Has seeming, I am the sun, is far nor in such valour!
-
+ 
 QUEEN MARGARET:
 My brathe king and by the king all the strong.
 And my name under to my my hthought.
-
+ 
 KING R

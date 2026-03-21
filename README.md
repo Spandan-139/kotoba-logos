@@ -2,10 +2,10 @@
 
 **Logos** is a research preview of a mini decoder-only Transformer language model built under **Kotoba**.
 
-Built from scratch with PyTorch to understand and implement a small autoregressive language model. This version is a character-level Transformer trained on the Tiny Shakespeare dataset for next-token prediction and text generation.
+Built from scratch with PyTorch to understand and implement a small autoregressive language model. A character-level Transformer trained on the Tiny Shakespeare dataset for next-token prediction and text generation.
 
 ## Status
-**Alpha / Research Preview** — `v0.1.0-alpha`
+**Alpha / Research Preview** — `v0.1-alpha`
 
 ---
 
@@ -29,85 +29,48 @@ Built from scratch with PyTorch to understand and implement a small autoregressi
 - Multi-head self-attention (`MultiHeadAttention`)
 - Feed-forward network with ReLU (4× expansion)
 - Residual connections + Pre-LayerNorm (`Block`)
-- Cross-entropy loss, AdamW optimizer (lr = 3e-4)
+- Cross-entropy loss, AdamW optimizer
 
 ---
 
-## Training
+## Results
 
-| Setting | Value |
+| Metric | v0.1-alpha |
 |---|---|
-| Dataset | Tiny Shakespeare (1,115,394 chars) |
-| Train / Val split | 90% / 10% |
-| Optimizer | AdamW |
-| Learning rate | 3e-4 |
-| Iterations | 5,000 |
-| Hardware | CPU (Kaggle) |
-| Training time | ~295 minutes |
+| Train loss | 1.2218 |
+| Val loss | 1.4996 |
+| Train perplexity | 3.39 |
+| Val perplexity | 4.48 |
+| Sampling | Greedy multinomial |
 
-### Loss curve
-
-| Step | Train loss | Val loss |
-|---|---|---|
-| 0 | 4.1834 | 4.1805 |
-| 500 | 1.9262 | 2.0115 |
-| 1000 | 1.5777 | 1.7492 |
-| 1500 | 1.4526 | 1.6543 |
-| 2000 | 1.3840 | 1.6010 |
-| 2500 | 1.3366 | 1.5612 |
-| 3000 | 1.3053 | 1.5357 |
-| 3500 | 1.2765 | 1.5270 |
-| 4000 | 1.2637 | 1.5217 |
-| 4500 | 1.2422 | 1.5020 |
-| 4999 | 1.2226 | 1.5001 |
-
-### Final results
-
-| Metric | Value |
-|---|---|
-| Train loss | **1.2218** |
-| Val loss | **1.4996** |
-| Train perplexity | **3.39** |
-| Val perplexity | **4.48** |
-
----
-
-## Sample Output
-
-```
-CLARENCE:
-Ah, see how it is no fearful an reverage!
-Touch's unto amen so happiness, sir, if you are did.
-
-TYBALT:
-No, love, still hand's far a smalliabless;
-I are so muter with his thins heir;
-For sucry thus goes himself, velute! O God!
-
-ELBOW:
-She trespast love, by a good taggerous sonarer
-Is nothing; that 'twasting for cit?
-
-QUEEN MARGARET:
-My brathe king and by the king all the strong.
-And my name under to my my hthought.
-```
+Full metrics, loss curves, and sample outputs for every version live in `releases/`.
 
 ---
 
 ## Repository Structure
 
 ```text
-kotoba-logos/
-├── notebooks/
-│   └── logos_v0_1_alpha.ipynb
-├── assets/
-│   └── sample_output.txt
+logos/
+├── logos/                  ← Python package
+│   ├── __init__.py
+│   ├── config.py
+│   ├── model.py
+│   ├── data.py
+│   ├── train.py
+│   └── generate.py
+├── releases/
+│   ├── README.md
+│   └── v0.1/
+│       └── alpha/
+│           ├── sample_output.txt
+│           ├── loss_curve.png
+│           ├── metrics.md
+│           └── CHANGELOG.md
 ├── README.md
+├── CHANGELOG.md
 ├── requirements.txt
 ├── .gitignore
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ---
@@ -118,11 +81,26 @@ kotoba-logos/
    ```bash
    pip install -r requirements.txt
    ```
-2. Open the notebook:
-   ```bash
-   jupyter notebook notebooks/logos_v0_1_alpha.ipynb
+
+2. Run training:
+   ```python
+   from logos.data import load_text, build_tokenizer, split_data
+   from logos.model import MiniTransformerLM
+   from logos.train import train
+   from logos.generate import generate
+   from logos.config import device
+
+   text = load_text()
+   encode, decode, vocab_size, chars = build_tokenizer(text)
+   train_data, val_data = split_data(text, encode)
+
+   model = MiniTransformerLM(vocab_size).to(device)
+   train(model, train_data, val_data)
+
+   print(generate(model, decode))
    ```
-> Originally trained on Kaggle. The notebook auto-downloads the Tiny Shakespeare dataset on first run.
+
+> Training was done on Kaggle (CPU). Use the launcher script in each release folder to reproduce a run on Kaggle.
 
 ---
 
