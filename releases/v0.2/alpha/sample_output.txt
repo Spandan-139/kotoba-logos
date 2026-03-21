@@ -1,0 +1,42 @@
+# Sample output — Logos v0.2-alpha
+# Model: MiniTransformerLM (character-level decoder-only Transformer)
+# Dataset: Tiny Shakespeare (1,115,394 chars)
+# Parameters: 2,715,713
+# Sampling: temperature=0.9, top_k=40
+# Generated tokens: 500
+
+First, sir, and time, he shall repent your liht;
+And strange of such our misfortune this head possible,
+And us he this brother, which 'Tis it was be if
+With hang an old to the countime, and a came
+Of warrow show in a lady pies her will-married,
+that I make what you should not, I'll do, in my deed,
+As you'll die; you proceed too, Capitol,
+Will have hear such a shamber and fear come of him,
+And that's you swear her from well. This did condict
+My husband shall I ssure a balm.
+
+GLOUCESTER:
+Did mind
+
+---
+
+Shall be our foes own to about out so.
+
+COMINIUS:
+Come, it is grace.
+
+POMPEY:
+Ay, sir, sir, my lord.
+
+CORIOLANUS:
+Come, he hath been out of the countimely. The two loss
+My rage confession of thy divine,
+And how on was the part winter heart of heavy come?
+
+GLOUCESTER:
+Not please a day: and she will, my lord: good lord.
+O God's lord, and with my life and hath said 'banish'd,
+A man thou art off his valour.'
+Forthward is my time, what do you thou leave, sir,
+To leave the king good passion with him.

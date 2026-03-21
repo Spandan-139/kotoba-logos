@@ -6,8 +6,8 @@ import random
 SEED = 42
 
 # ── Data ──────────────────────────────────────────────────────────────────────
-DATA_URL   = "https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt"
-LOCAL_TXT  = "/kaggle/working/input.txt"
+DATA_URL  = "https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt"
+LOCAL_TXT = "/kaggle/working/input.txt"
 
 # ── Model ─────────────────────────────────────────────────────────────────────
 BATCH_SIZE = 64
@@ -22,9 +22,17 @@ MAX_ITERS      = 5000
 EVAL_INTERVAL  = 500
 EVAL_ITERS     = 200
 LEARNING_RATE  = 3e-4
+GRAD_CLIP      = 1.0           # max gradient norm
+WARMUP_ITERS   = 100           # linear LR warmup steps
+MIN_LR_RATIO   = 0.05          # final lr = MIN_LR_RATIO * LEARNING_RATE
+
+# ── Checkpointing ─────────────────────────────────────────────────────────────
+BEST_MODEL_PATH = "/kaggle/working/logos_best_v0_2_alpha.pth"
 
 # ── Generation ────────────────────────────────────────────────────────────────
 GENERATE_TOKENS = 500
+TEMPERATURE     = 0.9
+TOP_K           = 40
 
 # ── Device ────────────────────────────────────────────────────────────────────
 device = "cuda" if torch.cuda.is_available() else "cpu"

@@ -42,7 +42,7 @@ class MultiHeadAttention(nn.Module):
 
 
 class FeedForward(nn.Module):
-    """Position-wise feed-forward network (4× expansion, ReLU)."""
+    """Position-wise feed-forward network (4x expansion, ReLU)."""
 
     def __init__(self, n_embd):
         super().__init__()
@@ -96,12 +96,12 @@ class MiniTransformerLM(nn.Module):
 
     def forward(self, idx, targets=None):
         B, T     = idx.shape
-        tok_emb  = self.token_embedding_table(idx)                              # (B, T, C)
+        tok_emb  = self.token_embedding_table(idx)                               # (B, T, C)
         pos_emb  = self.position_embedding_table(torch.arange(T, device=device)) # (T, C)
-        x        = tok_emb + pos_emb                                            # (B, T, C)
-        x        = self.blocks(x)                                               # (B, T, C)
-        x        = self.ln_f(x)                                                 # (B, T, C)
-        logits   = self.lm_head(x)                                              # (B, T, vocab)
+        x        = tok_emb + pos_emb                                             # (B, T, C)
+        x        = self.blocks(x)                                                # (B, T, C)
+        x        = self.ln_f(x)                                                  # (B, T, C)
+        logits   = self.lm_head(x)                                               # (B, T, vocab)
 
         loss = None
         if targets is not None:
@@ -113,12 +113,22 @@ class MiniTransformerLM(nn.Module):
         return logits, loss
 
     @torch.no_grad()
-    def generate(self, idx, max_new_tokens):
+    def generate(self, idx, max_new_tokens, temperature=1.0, top_k=None):
+        """
+        Generate tokens autoregressively.
+        temperature: scales logits before softmax (lower = more focused)
+        top_k: if set, restricts sampling to the top-k most likely tokens
+        """
         for _ in range(max_new_tokens):
             idx_cond  = idx[:, -BLOCK_SIZE:]
             logits, _ = self(idx_cond)
-            logits    = logits[:, -1, :]
-            probs     = F.softmax(logits, dim=-1)
-            idx_next  = torch.multinomial(probs, num_samples=1)
-            idx       = torch.cat((idx, idx_next), dim=1)
+            logits    = logits[:, -1, :] / temperature              # (B, vocab)
+
+            if top_k is not None:
+                v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
+                logits[logits < v[:, [-1]]] = float("-inf")
+
+            probs    = F.softmax(logits, dim=-1)
+            idx_next = torch.multinomial(probs, num_samples=1)
+            idx      = torch.cat((idx, idx_next), dim=1)
         return idx

@@ -5,7 +5,7 @@
 Built from scratch with PyTorch to understand and implement a small autoregressive language model. A character-level Transformer trained on the Tiny Shakespeare dataset for next-token prediction and text generation.
 
 ## Status
-**Alpha / Research Preview** — `v0.1-alpha`
+**Alpha / Research Preview** — `v0.2-alpha`
 
 ---
 
@@ -27,21 +27,24 @@ Built from scratch with PyTorch to understand and implement a small autoregressi
 - Token + positional embeddings
 - Causal masked self-attention (`Head`)
 - Multi-head self-attention (`MultiHeadAttention`)
-- Feed-forward network with ReLU (4× expansion)
+- Feed-forward network with ReLU (4x expansion)
 - Residual connections + Pre-LayerNorm (`Block`)
 - Cross-entropy loss, AdamW optimizer
+- Cosine LR scheduler with linear warmup *(v0.2)*
+- Gradient clipping *(v0.2)*
 
 ---
 
 ## Results
 
-| Metric | v0.1-alpha |
-|---|---|
-| Train loss | 1.2218 |
-| Val loss | 1.4996 |
-| Train perplexity | 3.39 |
-| Val perplexity | 4.48 |
-| Sampling | Greedy multinomial |
+| Metric | v0.1-alpha | v0.2-alpha |
+|---|---|---|
+| Train loss | 1.2218 | 1.2607 |
+| Val loss | 1.4996 | 1.5055 |
+| Train perplexity | 3.39 | 3.53 |
+| Val perplexity | 4.48 | 4.51 |
+| Best val checkpoint | — | 1.5042 @ step 4999 |
+| Sampling | greedy | temperature=0.9, top_k=40 |
 
 Full metrics, loss curves, and sample outputs for every version live in `releases/`.
 
@@ -50,7 +53,7 @@ Full metrics, loss curves, and sample outputs for every version live in `release
 ## Repository Structure
 
 ```text
-logos/
+kotoba-logos/
 ├── logos/                  ← Python package
 │   ├── __init__.py
 │   ├── config.py
@@ -60,8 +63,16 @@ logos/
 │   └── generate.py
 ├── releases/
 │   ├── README.md
-│   └── v0.1/
+│   ├── v0.1/
+│   │   └── alpha/
+│   │       ├── logos_v0_1_alpha.ipynb
+│   │       ├── sample_output.txt
+│   │       ├── loss_curve.png
+│   │       ├── metrics.md
+│   │       └── CHANGELOG.md
+│   └── v0.2/
 │       └── alpha/
+│           ├── logos_v0_2_alpha.ipynb
 │           ├── sample_output.txt
 │           ├── loss_curve.png
 │           ├── metrics.md
@@ -100,15 +111,15 @@ logos/
    print(generate(model, decode))
    ```
 
-> Training was done on Kaggle (CPU). Use the launcher script in each release folder to reproduce a run on Kaggle.
+> Training was done on Kaggle (CPU). Use the notebook in each release folder to reproduce a run on Kaggle.
 
 ---
 
 ## Roadmap
-- [ ] Add learning rate scheduler
-- [ ] Add gradient clipping
-- [ ] Save best validation checkpoint
-- [ ] Improve text generation (top-k / temperature sampling)
+- [x] Add learning rate scheduler
+- [x] Add gradient clipping
+- [x] Save best validation checkpoint
+- [x] Improve text generation (top-k / temperature sampling)
 - [ ] Train on GPU
 - [ ] Compare multiple model sizes
 - [ ] Explore subword / BPE tokenization
