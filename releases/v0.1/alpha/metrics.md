@@ -32,6 +32,8 @@
 
 ## Loss Curve
 
+![Loss curve](loss_curve.png)
+
 | Step | Train loss | Val loss |
 |---|---|---|
 | 0 | 4.1834 | 4.1805 |
@@ -45,8 +47,6 @@
 | 4000 | 1.2637 | 1.5217 |
 | 4500 | 1.2422 | 1.5020 |
 | 4999 | 1.2226 | 1.5001 |
-
-See `loss_curve.png` for the plot.
 
 ## Final Results
 
