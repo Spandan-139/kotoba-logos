@@ -1,5 +1,5 @@
 import torch
-from config import GENERATE_TOKENS, device
+from .config import GENERATE_TOKENS, device
 
 
 def generate(model, decode, max_new_tokens=GENERATE_TOKENS):

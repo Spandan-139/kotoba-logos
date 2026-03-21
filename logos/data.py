@@ -1,7 +1,7 @@
 import os
 import requests
 import torch
-from config import (DATA_URL, LOCAL_TXT, BLOCK_SIZE, BATCH_SIZE, device)
+from .config import (DATA_URL, LOCAL_TXT, BLOCK_SIZE, BATCH_SIZE, device)
 
 
 def load_text():

@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from config import BLOCK_SIZE, N_EMBD, N_HEAD, N_LAYER, DROPOUT, device
+from .config import BLOCK_SIZE, N_EMBD, N_HEAD, N_LAYER, DROPOUT, device
 
 
 class Head(nn.Module):

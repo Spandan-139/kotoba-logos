@@ -1,7 +1,7 @@
 import time
 import torch
-from config import (MAX_ITERS, EVAL_INTERVAL, EVAL_ITERS, LEARNING_RATE, device)
-from data import get_batch
+from .config import (MAX_ITERS, EVAL_INTERVAL, EVAL_ITERS, LEARNING_RATE, device)
+from .data import get_batch
 
 
 @torch.no_grad()
