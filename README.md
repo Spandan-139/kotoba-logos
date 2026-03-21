@@ -39,10 +39,8 @@ Built from scratch with PyTorch to understand and implement a small autoregressi
 
 | Version | Train loss | Val loss | Train PPL | Val PPL | Best val checkpoint | Sampling |
 |---|---|---|---|---|---|---|
-| v0.1-alpha | 1.2218 | 1.4996 | 3.39 | 4.48 | — | greedy |
 | v0.2-alpha | 1.2607 | 1.5055 | 3.53 | 4.51 | 1.5042 @ step 4999 | temp=0.9, top_k=40 |
-
-Full metrics, loss curves, and sample outputs for every version live in `releases/`.
+| v0.1-alpha | 1.2218 | 1.4996 | 3.39 | 4.48 | — | greedy |
 
 ---
 
