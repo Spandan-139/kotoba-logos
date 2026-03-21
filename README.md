@@ -59,14 +59,14 @@ kotoba-logos/
 │   ├── README.md
 │   ├── v0.1/
 │   │   └── alpha/
-│   │       ├── logos_v0_1_alpha.ipynb
+│   │       ├── logos_v0.1_alpha.ipynb
 │   │       ├── sample_output.txt
 │   │       ├── loss_curve.png
 │   │       ├── metrics.md
 │   │       └── CHANGELOG.md
 │   └── v0.2/
 │       └── alpha/
-│           ├── logos_v0_2_alpha.ipynb
+│           ├── logos_v0.2_alpha.ipynb
 │           ├── sample_output.txt
 │           ├── loss_curve.png
 │           ├── metrics.md
