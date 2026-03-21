@@ -13,7 +13,7 @@
 | Context length | 256 |
 | Batch size | 32 |
 | Dropout | 0.2 |
-| Total parameters | ~32M |
+| Total parameters | 32,159,825 |
 
 ## Training
 
@@ -39,17 +39,17 @@
 
 | Step | Train loss | Val loss |
 |---|---|---|
-| 0 | 10.8741 | 10.8750 |
-| 500 | — | — |
-| 1000 | — | — |
-| 1500 | — | — |
-| 2000 | — | — |
-| 2500 | — | — |
-| 3000 | — | — |
-| 3500 | — | — |
-| 4000 | — | — |
-| 4500 | — | — |
-| 4999 | 4.8780 | 5.2579 |
+| 0 | 10.8925 | 10.8915 |
+| 500 | 6.2215 | 6.2482 |
+| 1000 | 5.7970 | 5.9099 |
+| 1500 | 5.5192 | 5.6923 |
+| 2000 | 5.3043 | 5.5198 |
+| 2500 | 5.1696 | 5.4282 |
+| 3000 | 5.0447 | 5.3534 |
+| 3500 | 4.9584 | 5.3086 |
+| 4000 | 4.9326 | 5.2842 |
+| 4500 | 4.8925 | 5.2595 |
+| 4999 | 4.8801 | 5.2422 |
 
 ## Final Results
 
@@ -62,7 +62,7 @@
 | Best val loss (checkpoint) | **5.2422** at step 4999 |
 
 > Metrics are not directly comparable to v0.1 or v0.2. The tokenizer changed
-> from character-level (65 tokens) to GPT-2 BPE (50,257 tokens), and the
+> from character-level (65 tokens) to GPT-2 BPE (50,257 tokens) - the
 > dataset changed from Tiny Shakespeare to OpenWebText. Perplexity is computed
 > over a 50,257-token vocabulary on diverse real-world text — a fundamentally
 > harder task.
