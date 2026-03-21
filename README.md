@@ -37,14 +37,10 @@ Built from scratch with PyTorch to understand and implement a small autoregressi
 
 ## Results
 
-| Metric | v0.1-alpha | v0.2-alpha |
-|---|---|---|
-| Train loss | 1.2218 | 1.2607 |
-| Val loss | 1.4996 | 1.5055 |
-| Train perplexity | 3.39 | 3.53 |
-| Val perplexity | 4.48 | 4.51 |
-| Best val checkpoint | — | 1.5042 @ step 4999 |
-| Sampling | greedy | temperature=0.9, top_k=40 |
+| Version | Train loss | Val loss | Train PPL | Val PPL | Best val checkpoint | Sampling |
+|---|---|---|---|---|---|---|
+| v0.1-alpha | 1.2218 | 1.4996 | 3.39 | 4.48 | — | greedy |
+| v0.2-alpha | 1.2607 | 1.5055 | 3.53 | 4.51 | 1.5042 @ step 4999 | temp=0.9, top_k=40 |
 
 Full metrics, loss curves, and sample outputs for every version live in `releases/`.
 
@@ -112,17 +108,6 @@ kotoba-logos/
    ```
 
 > Training was done on Kaggle (CPU). Use the notebook in each release folder to reproduce a run on Kaggle.
-
----
-
-## Roadmap
-- [x] Add learning rate scheduler
-- [x] Add gradient clipping
-- [x] Save best validation checkpoint
-- [x] Improve text generation (top-k / temperature sampling)
-- [ ] Train on GPU
-- [ ] Compare multiple model sizes
-- [ ] Explore subword / BPE tokenization
 
 ---
 
