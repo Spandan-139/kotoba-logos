@@ -75,7 +75,7 @@ class Block(nn.Module):
 
 
 class MiniTransformerLM(nn.Module):
-    """Decoder-only character-level Transformer language model."""
+    """Decoder-only BPE-tokenized Transformer language model."""
 
     def __init__(self, vocab_size):
         super().__init__()
@@ -113,20 +113,35 @@ class MiniTransformerLM(nn.Module):
         return logits, loss
 
     @torch.no_grad()
-    def generate(self, idx, max_new_tokens, temperature=1.0, top_k=None):
+    def generate(self, idx, max_new_tokens, temperature=1.0, top_k=None, top_p=None):
         """
         Generate tokens autoregressively.
-        temperature: scales logits before softmax (lower = more focused)
-        top_k: if set, restricts sampling to the top-k most likely tokens
+        temperature: scales logits before softmax
+        top_k: restricts sampling to top-k most likely tokens
+        top_p: nucleus sampling — restricts to smallest set of tokens
+               whose cumulative probability exceeds top_p
         """
+        if temperature <= 0:
+            raise ValueError("temperature must be > 0")
+
         for _ in range(max_new_tokens):
             idx_cond  = idx[:, -BLOCK_SIZE:]
             logits, _ = self(idx_cond)
             logits    = logits[:, -1, :] / temperature              # (B, vocab)
 
+            # top-k
             if top_k is not None:
-                v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-                logits[logits < v[:, [-1]]] = float("-inf")
+                k = min(top_k, logits.size(-1))
+                top_vals, _ = torch.topk(logits, k)
+                logits[logits < top_vals[:, [-1]]] = float("-inf")
+
+            # top-p (nucleus)
+            if top_p is not None and top_p < 1.0:
+                sorted_logits, sorted_indices = torch.sort(logits, descending=True, dim=-1)
+                cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
+                sorted_indices_to_remove = cumulative_probs - F.softmax(sorted_logits, dim=-1) > top_p
+                sorted_logits[sorted_indices_to_remove] = float("-inf")
+                logits = torch.zeros_like(logits).scatter_(1, sorted_indices, sorted_logits)
 
             probs    = F.softmax(logits, dim=-1)
             idx_next = torch.multinomial(probs, num_samples=1)

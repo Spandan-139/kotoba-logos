@@ -1,0 +1,29 @@
+# Sample output — Logos v0.3-alpha
+# Model: MiniTransformerLM (decoder-only Transformer)
+# Dataset: OpenWebText (8,000 samples, 38.8M chars, 8.8M tokens)
+# Tokenizer: GPT-2 BPE (vocab size 50,257)
+# Parameters: ~32M
+# Sampling: temperature=0.9, top_k=40, top_p=0.9
+# Generated tokens: 500
+
+! The "the first thing I'm doing this," and then I'm going to get around.
+
+I don't know the truth I've been doing so far as I wanted to do a few days. I think I've seen the kind of concern. It's my mind. And my life is to me.
+
+You've gotten that much of the world, and then it's really the best for my life. I am sorry to say that I'm like I know if I was doing it. I'm all the last time, I can see it. I'm not doing it. That's because I'm doing it. I think I'm not going to talk to me.
+
+I'm not trying to get a big deal with the world. I think it's a little bit more important to come from my life. I think they are going to see this. That's a little bit. I'm able to give the thing to put the best of life. And I'm sure what we have to be in order to start in that.
+
+It's my ability to get some kind of things. I was happy to go to it. The idea is that I will be better on the process. I've been taking my time and I have to try to build my work.
+
+It's a lot of reasons I'm going to put my life. So I think it's like a lot more than I know what I'm looking back to a long time. I feel that I don't have to do it but I don't have a whole world.
+
+The best thing I don't get it with. There was a few things I just wanted to be a little bit that I didn't be able to go there.
+
+What happened at the time of my family?
+
+You don't know, but you can't have to know what.
+
+I don't want to be sure I was talking about it. I've done a lot of my mind in that I'm just talking.
+
+The biggest answer is why I want to get it for me. I

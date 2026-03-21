@@ -1,37 +1,48 @@
 import os
-import requests
 import torch
-from .config import (DATA_URL, LOCAL_TXT, BLOCK_SIZE, BATCH_SIZE, device)
+import tiktoken
+from datasets import load_dataset
+from .config import DATA_CACHE, OWT_SAMPLES, BLOCK_SIZE, BATCH_SIZE, device
 
 
-def load_text():
-    """Download Tiny Shakespeare if not already present, return raw text."""
-    if not os.path.exists(LOCAL_TXT):
-        r = requests.get(DATA_URL, timeout=30)
-        r.raise_for_status()
-        with open(LOCAL_TXT, "w", encoding="utf-8") as f:
-            f.write(r.text)
-    with open(LOCAL_TXT, "r", encoding="utf-8") as f:
-        return f.read()
+def load_text() -> str:
+    """Download OpenWebText subset if not cached, return raw text."""
+    if not os.path.exists(DATA_CACHE):
+        print("Downloading OpenWebText subset...")
+        dataset = load_dataset("openwebtext", split="train", streaming=True)
+        samples = []
+        for i, sample in enumerate(dataset):
+            if i >= OWT_SAMPLES:
+                break
+            samples.append(sample["text"])
+        text = "\n".join(samples)
+        with open(DATA_CACHE, "w", encoding="utf-8") as f:
+            f.write(text)
+        print(f"Saved {len(samples)} samples.")
+    else:
+        with open(DATA_CACHE, "r", encoding="utf-8") as f:
+            text = f.read()
+    return text
 
 
-def build_tokenizer(text):
-    """Character-level tokenizer. Returns (encode, decode, vocab_size, chars)."""
-    chars      = sorted(list(set(text)))
-    vocab_size = len(chars)
-    stoi       = {ch: i for i, ch in enumerate(chars)}
-    itos       = {i: ch for i, ch in enumerate(chars)}
+def build_tokenizer(text: str):
+    """
+    GPT-2 BPE tokenizer via tiktoken.
+    Returns (encode, decode, vocab_size).
+    """
+    enc = tiktoken.get_encoding("gpt2")
+    vocab_size = enc.n_vocab     # 50,257
 
-    def encode(s):
-        return [stoi[c] for c in s]
+    def encode(s: str):
+        return enc.encode_ordinary(s)
 
     def decode(ids):
-        return "".join([itos[i] for i in ids])
+        return enc.decode(ids)
 
-    return encode, decode, vocab_size, chars
+    return encode, decode, vocab_size
 
 
-def split_data(text, encode):
+def split_data(text: str, encode):
     """90/10 train/val split, returns tensors."""
     data       = torch.tensor(encode(text), dtype=torch.long)
     n          = int(0.9 * len(data))

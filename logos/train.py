@@ -32,11 +32,12 @@ def estimate_loss(model, train_data, val_data):
 
 def train(model, train_data, val_data):
     """
-    Training loop for v0.2-alpha.
-    Cosine LR scheduler with linear warmup, gradient clipping, best-checkpoint saving.
+    Training loop for v0.3-alpha.
+    Cosine LR with warmup, gradient clipping, AMP, best-checkpoint saving.
     Returns (train_losses, val_losses, steps, best_val_loss, best_iter).
     """
     optimizer    = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
+    scaler       = torch.amp.GradScaler('cuda', enabled=(device == "cuda"))
     train_losses = []
     val_losses   = []
     steps        = []
@@ -46,7 +47,6 @@ def train(model, train_data, val_data):
 
     for iter_idx in range(MAX_ITERS):
 
-        # set LR for this step
         lr = get_lr(iter_idx)
         for param_group in optimizer.param_groups:
             param_group["lr"] = lr
@@ -58,7 +58,6 @@ def train(model, train_data, val_data):
             steps.append(iter_idx)
             print(f"step {iter_idx:5d} | train loss {losses['train']:.4f} | val loss {losses['val']:.4f} | lr {lr:.2e}")
 
-            # save best checkpoint
             if losses["val"] < best_val_loss:
                 best_val_loss = losses["val"]
                 best_iter     = iter_idx
@@ -69,11 +68,16 @@ def train(model, train_data, val_data):
                 }, BEST_MODEL_PATH)
 
         xb, yb = get_batch("train", train_data, val_data)
-        _, loss = model(xb, yb)
+
+        with torch.amp.autocast('cuda', enabled=(device == "cuda")):
+            _, loss = model(xb, yb)
+
         optimizer.zero_grad(set_to_none=True)
-        loss.backward()
+        scaler.scale(loss).backward()
+        scaler.unscale_(optimizer)
         torch.nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
-        optimizer.step()
+        scaler.step(optimizer)
+        scaler.update()
 
     elapsed = (time.time() - start_time) / 60
     print(f"\nTraining completed in {elapsed:.2f} minutes.")

@@ -6,15 +6,15 @@ import random
 SEED = 42
 
 # ── Data ──────────────────────────────────────────────────────────────────────
-DATA_URL  = "https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt"
-LOCAL_TXT = "/kaggle/working/input.txt"
+DATA_CACHE  = "/kaggle/working/owt_text.txt"
+OWT_SAMPLES = 8000
 
 # ── Model ─────────────────────────────────────────────────────────────────────
-BATCH_SIZE = 64
-BLOCK_SIZE = 128        # context length
-N_EMBD     = 192
-N_HEAD     = 6
-N_LAYER    = 6
+BATCH_SIZE = 32
+BLOCK_SIZE = 256        # context length
+N_EMBD     = 256
+N_HEAD     = 8
+N_LAYER    = 8
 DROPOUT    = 0.2
 
 # ── Training ──────────────────────────────────────────────────────────────────
@@ -22,17 +22,18 @@ MAX_ITERS      = 5000
 EVAL_INTERVAL  = 500
 EVAL_ITERS     = 200
 LEARNING_RATE  = 3e-4
-GRAD_CLIP      = 1.0           # max gradient norm
-WARMUP_ITERS   = 100           # linear LR warmup steps
-MIN_LR_RATIO   = 0.05          # final lr = MIN_LR_RATIO * LEARNING_RATE
+GRAD_CLIP      = 1.0
+WARMUP_ITERS   = 100
+MIN_LR_RATIO   = 0.05
 
 # ── Checkpointing ─────────────────────────────────────────────────────────────
-BEST_MODEL_PATH = "/kaggle/working/logos_best_v0_2_alpha.pth"
+BEST_MODEL_PATH = "/kaggle/working/logos_best_v0_3_alpha.pth"
 
 # ── Generation ────────────────────────────────────────────────────────────────
 GENERATE_TOKENS = 500
 TEMPERATURE     = 0.9
 TOP_K           = 40
+TOP_P           = 0.9
 
 # ── Device ────────────────────────────────────────────────────────────────────
 device = "cuda" if torch.cuda.is_available() else "cpu"

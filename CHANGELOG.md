@@ -2,6 +2,39 @@
 
 ---
 
+## v0.3-alpha — BPE tokenization + OpenWebText + GPU training
+
+**Released:** March 2026
+
+Built on v0.2-alpha. First major architectural shift — BPE tokenization,
+real-world web text dataset, GPU training, and top-p sampling.
+
+### What changed
+- Replaced character-level tokenizer with GPT-2 BPE via tiktoken (vocab: 65 → 50,257)
+- Replaced Tiny Shakespeare with OpenWebText (8k samples, 38.8M chars, 8.8M tokens)
+- Larger model: N_EMBD 192→256, N_HEAD 6→8, N_LAYER 6→8, BLOCK_SIZE 128→256
+- First GPU training run (Kaggle P100) with mixed precision (AMP)
+- Added top-p (nucleus) sampling alongside top-k and temperature
+- Total parameters: 2.7M → ~32M
+
+### What was observed
+- Initial loss ~10.87 — correct random baseline for vocab size 50,257
+- Generated text shows qualitatively far more coherent output than v0.2 —
+  real words, real grammar, real sentence structure throughout
+- Model still improving at step 4999 — more steps or data would help
+- Metrics not comparable to v0.1/v0.2 due to tokenizer and dataset change
+
+### Results
+| Metric | Value |
+|---|---|
+| Train loss | 4.8780 |
+| Val loss | 5.2579 |
+| Train perplexity | 131.36 |
+| Val perplexity | 192.08 |
+| Best val checkpoint | 5.2422 @ step 4999 |
+
+---
+
 ## v0.2-alpha — Training stability + improved generation
 
 **Released:** March 2026

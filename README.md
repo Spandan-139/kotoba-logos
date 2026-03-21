@@ -2,10 +2,10 @@
 
 **Logos** is a research preview of a mini decoder-only Transformer language model built under **Kotoba**.
 
-Built from scratch with PyTorch to understand and implement a small autoregressive language model. A character-level Transformer trained on the Tiny Shakespeare dataset for next-token prediction and text generation.
+Built from scratch with PyTorch to understand and implement a small autoregressive language model. Trained on real-world web text using BPE tokenization and GPU compute for next-token prediction and text generation.
 
 ## Status
-**Alpha / Research Preview** — `v0.2-alpha`
+**Alpha / Research Preview** — `v0.3-alpha`
 
 ---
 
@@ -14,14 +14,14 @@ Built from scratch with PyTorch to understand and implement a small autoregressi
 | Component | Detail |
 |---|---|
 | Type | Decoder-only Transformer |
-| Tokenizer | Character-level (vocab size: 65) |
-| Embedding dim (`N_EMBD`) | 192 |
-| Attention heads (`N_HEAD`) | 6 |
-| Layers (`N_LAYER`) | 6 |
-| Context length (`BLOCK_SIZE`) | 128 |
-| Batch size | 64 |
+| Tokenizer | GPT-2 BPE via tiktoken (vocab size: 50,257) |
+| Embedding dim (`N_EMBD`) | 256 |
+| Attention heads (`N_HEAD`) | 8 |
+| Layers (`N_LAYER`) | 8 |
+| Context length (`BLOCK_SIZE`) | 256 |
+| Batch size | 32 |
 | Dropout | 0.2 |
-| Total parameters | **2,715,713** |
+| Total parameters | **~32M** |
 
 ### Components
 - Token + positional embeddings
@@ -30,17 +30,22 @@ Built from scratch with PyTorch to understand and implement a small autoregressi
 - Feed-forward network with ReLU (4x expansion)
 - Residual connections + Pre-LayerNorm (`Block`)
 - Cross-entropy loss, AdamW optimizer
-- Cosine LR scheduler with linear warmup *(v0.2)*
-- Gradient clipping *(v0.2)*
+- Cosine LR scheduler with linear warmup
+- Gradient clipping
+- Mixed precision training (AMP)
+- Temperature + top-k + top-p sampling
 
 ---
 
 ## Results
 
-| Version | Train loss | Val loss | Train PPL | Val PPL | Best val checkpoint | Sampling |
-|---|---|---|---|---|---|---|
-| v0.2-alpha | 1.2607 | 1.5055 | 3.53 | 4.51 | 1.5042 @ step 4999 | temp=0.9, top_k=40 |
-| v0.1-alpha | 1.2218 | 1.4996 | 3.39 | 4.48 | — | greedy |
+| Version | Train loss | Val loss | Train PPL | Val PPL | Best val checkpoint | Tokenizer | Dataset | Hardware |
+|---|---|---|---|---|---|---|---|---|
+| v0.3-alpha | 4.8780 | 5.2579 | 131.36 | 192.08 | 5.2422 @ step 4999 | GPT-2 BPE | OpenWebText | GPU P100 |
+| v0.2-alpha | 1.2607 | 1.5055 | 3.53 | 4.51 | 1.5042 @ step 4999 | Char-level | Tiny Shakespeare | CPU |
+| v0.1-alpha | 1.2218 | 1.4996 | 3.39 | 4.48 | — | Char-level | Tiny Shakespeare | CPU |
+
+> v0.3 metrics are not comparable to v0.1/v0.2 — different tokenizer, different dataset, fundamentally harder task.
 
 ---
 
@@ -64,9 +69,16 @@ kotoba-logos/
 │   │       ├── loss_curve.png
 │   │       ├── metrics.md
 │   │       └── CHANGELOG.md
-│   └── v0.2/
+│   ├── v0.2/
+│   │   └── alpha/
+│   │       ├── logos_v0.2_alpha.ipynb
+│   │       ├── sample_output.txt
+│   │       ├── loss_curve.png
+│   │       ├── metrics.md
+│   │       └── CHANGELOG.md
+│   └── v0.3/
 │       └── alpha/
-│           ├── logos_v0.2_alpha.ipynb
+│           ├── logos-v0.3-alpha.ipynb
 │           ├── sample_output.txt
 │           ├── loss_curve.png
 │           ├── metrics.md
@@ -96,7 +108,7 @@ kotoba-logos/
    from logos.config import device
 
    text = load_text()
-   encode, decode, vocab_size, chars = build_tokenizer(text)
+   encode, decode, vocab_size = build_tokenizer(text)
    train_data, val_data = split_data(text, encode)
 
    model = MiniTransformerLM(vocab_size).to(device)
@@ -105,7 +117,7 @@ kotoba-logos/
    print(generate(model, decode))
    ```
 
-> Training was done on Kaggle (CPU). Use the notebook in each release folder to reproduce a run on Kaggle.
+> Training was done on Kaggle (GPU P100). Use the notebook in each release folder to reproduce a run on Kaggle.
 
 ---
 
