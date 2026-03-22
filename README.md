@@ -29,7 +29,8 @@ Built from scratch with PyTorch to understand and document exactly how a languag
 - Multi-head self-attention (`MultiHeadAttention`)
 - Feed-forward network with ReLU (4x expansion)
 - Residual connections + Pre-LayerNorm (`Block`)
-- Cross-entropy loss, AdamW optimizer
+- Cross-entropy loss
+- AdamW optimizer
 - Cosine LR scheduler with linear warmup
 - Gradient clipping
 - Mixed precision training (AMP)

@@ -16,7 +16,7 @@ training robustness and generation quality.
 
 **Generation:**
 - `generate()` now supports `temperature` and `top_k` sampling
-- Default: temperature=0.9, top_k=40
+- Default: `temperature=0.9`, `top_k=40`
 - Replaced raw multinomial (greedy) with controlled sampling
 
 **New:**

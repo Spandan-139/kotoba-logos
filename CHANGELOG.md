@@ -6,13 +6,20 @@
 
 **Released:** March 2026
 
-Built on v0.2-alpha. First major architectural shift — BPE tokenization,
-real-world web text dataset, GPU training, and top-p sampling.
+Built on v0.2-alpha. First major architectural shift:
+- BPE tokenization
+- Real-world web text dataset
+- GPU training
+- Top-p sampling
 
 ### What changed
 - Replaced character-level tokenizer with GPT-2 BPE via tiktoken (vocab: 65 → 50,257)
 - Replaced Tiny Shakespeare with OpenWebText (8k samples, 38.8M chars, 8.8M tokens)
-- Larger model: N_EMBD 192→256, N_HEAD 6→8, N_LAYER 6→8, BLOCK_SIZE 128→256
+- Larger model:
+  - N_EMBD: 192 → 256
+  - N_HEAD: 6 → 8
+  - N_LAYER: 6 → 8
+  - BLOCK_SIZE: 128 → 256
 - First GPU training run (Kaggle P100) with mixed precision (AMP)
 - Added top-p (nucleus) sampling alongside top-k and temperature
 - Total parameters: 2.7M → ~32M
@@ -76,10 +83,15 @@ from scratch in PyTorch and verify it could learn to generate Shakespeare-like t
 
 ### What was built
 - Character-level tokenizer (vocab size 65)
-- Decoder-only Transformer: 6 layers, 6 heads, embedding dim 192, context length 128
+- Decoder-only Transformer:
+  - 6 layers
+  - 6 heads
+  - Embedding dim 192
+  - Context length 128
 - Causal masked self-attention with pre-LayerNorm and residuals
 - Feed-forward network with 4x expansion and ReLU
-- Cross-entropy loss, AdamW optimizer at fixed learning rate 3e-4
+- Cross-entropy loss
+- AdamW optimizer at fixed learning rate 3e-4
 - Greedy multinomial sampling for generation
 - 5,000 training steps on CPU (Kaggle), ~295 minutes
 

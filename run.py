@@ -24,7 +24,6 @@ def cmd_train(args):
     from logos.data import load_text, build_tokenizer, split_data
     from logos.model import MiniTransformerLM
     from logos.train import train
-    from logos.generate import generate
     from logos.config import device
 
     print(f"Device: {device}")

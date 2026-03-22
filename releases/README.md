@@ -13,20 +13,32 @@ All Logos versions, newest first.
 ---
 
 ## v0.3-alpha
-BPE tokenization + OpenWebText + GPU training. First major architectural shift —
-GPT-2 BPE tokenizer, real-world web text, mixed precision GPU training, top-p sampling.
+First major architectural shift:
+- GPT-2 BPE tokenizer
+- Real-world web text (OpenWebText)
+- Mixed precision GPU training
+- Top-p sampling
+
 → [`v0.3/alpha/`](v0.3/alpha/)
 
 ---
 
 ## v0.2-alpha
-Training stability + improved generation. Cosine LR scheduler, gradient clipping,
-best-checkpoint saving, temperature + top-k sampling.
+Training stability + improved generation:
+- Cosine LR scheduler
+- Gradient clipping
+- Best-checkpoint saving
+- Temperature + top-k sampling
+
 → [`v0.2/alpha/`](v0.2/alpha/)
 
 ---
 
 ## v0.1-alpha
-First working prototype. Character-level Transformer trained on Tiny Shakespeare.
-Fixed learning rate, greedy sampling, no checkpointing.
+First working prototype:
+- Character-level Transformer trained on Tiny Shakespeare
+- Fixed learning rate
+- Greedy sampling
+- No checkpointing
+
 → [`v0.1/alpha/`](v0.1/alpha/)

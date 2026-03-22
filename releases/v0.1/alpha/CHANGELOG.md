@@ -11,10 +11,15 @@ from scratch in PyTorch and verify it could learn to generate Shakespeare-like t
 
 ### What was built
 - Character-level tokenizer (vocab size 65)
-- Decoder-only Transformer: 6 layers, 6 heads, embedding dim 192, context length 128
+- Decoder-only Transformer:
+  - 6 layers
+  - 6 heads
+  - Embedding dim 192
+  - Context length 128
 - Causal masked self-attention with pre-LayerNorm and residuals
 - Feed-forward network with 4× expansion and ReLU
-- Cross-entropy loss, AdamW optimizer at fixed learning rate 3e-4
+- Cross-entropy loss
+- AdamW optimizer at fixed learning rate 3e-4
 - Greedy multinomial sampling for generation
 - 5,000 training steps on CPU (Kaggle), ~295 minutes
 

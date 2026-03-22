@@ -31,13 +31,16 @@ and real-world web text, trained on GPU for the first time.
 
 **Generation:**
 - Added top-p (nucleus) sampling alongside existing top-k and temperature
-- Default: temperature=0.9, top_k=40, top_p=0.9
+- Default: `temperature=0.9`, `top_k=40`, `top_p=0.9`
 
 **Training:**
 - First GPU training run (Kaggle P100)
 - Mixed precision training via torch.amp.autocast + GradScaler
 - Batch size reduced to 32 (from 64) due to larger vocab embedding memory cost
-- All other training settings carried over from v0.2 (cosine LR, warmup, grad clip, best checkpoint)
+- All other training settings carried over from v0.2:
+  - Cosine LR with warmup
+  - Gradient clipping
+  - Best checkpoint saving
 
 ### What was observed
 - Initial loss ~10.87 — correct for random init over vocab size 50,257 (ln(50257) ≈ 10.82)
