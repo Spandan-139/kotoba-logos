@@ -5,3 +5,5 @@ __pycache__/
 *.pt
 .DS_Store
 /kaggle/
+data/
+checkpoints/

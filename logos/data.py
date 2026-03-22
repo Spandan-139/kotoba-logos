@@ -8,6 +8,7 @@ from .config import DATA_CACHE, OWT_SAMPLES, BLOCK_SIZE, BATCH_SIZE, device
 def load_text() -> str:
     """Download OpenWebText subset if not cached, return raw text."""
     if not os.path.exists(DATA_CACHE):
+        os.makedirs(os.path.dirname(os.path.abspath(DATA_CACHE)), exist_ok=True)
         print("Downloading OpenWebText subset...")
         dataset = load_dataset("openwebtext", split="train", streaming=True)
         samples = []

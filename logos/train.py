@@ -1,8 +1,10 @@
 import math
+import os
 import time
 import torch
 from .config import (MAX_ITERS, EVAL_INTERVAL, EVAL_ITERS, LEARNING_RATE,
-                     GRAD_CLIP, WARMUP_ITERS, MIN_LR_RATIO, BEST_MODEL_PATH, device)
+                     GRAD_CLIP, WARMUP_ITERS, MIN_LR_RATIO, BEST_MODEL_PATH,
+                     BLOCK_SIZE, N_EMBD, N_HEAD, N_LAYER, DROPOUT, device)
 from .data import get_batch
 
 
@@ -30,12 +32,16 @@ def estimate_loss(model, train_data, val_data):
     return out
 
 
-def train(model, train_data, val_data):
+def train(model, train_data, val_data, vocab_size=None, tokenizer_type="gpt2"):
     """
-    Training loop for v0.3-alpha.
+    Training loop.
     Cosine LR with warmup, gradient clipping, AMP, best-checkpoint saving.
+    Saves config metadata in the checkpoint so generate can reload without
+    needing a separate config file.
     Returns (train_losses, val_losses, steps, best_val_loss, best_iter).
     """
+    os.makedirs(os.path.dirname(os.path.abspath(BEST_MODEL_PATH)), exist_ok=True)
+
     optimizer    = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
     scaler       = torch.amp.GradScaler('cuda', enabled=(device == "cuda"))
     train_losses = []
@@ -61,11 +67,22 @@ def train(model, train_data, val_data):
             if losses["val"] < best_val_loss:
                 best_val_loss = losses["val"]
                 best_iter     = iter_idx
-                torch.save({
+                checkpoint = {
                     "iter":             iter_idx,
                     "model_state_dict": model.state_dict(),
                     "val_loss":         best_val_loss,
-                }, BEST_MODEL_PATH)
+                }
+                if vocab_size is not None:
+                    checkpoint["config"] = {
+                        "vocab_size":  vocab_size,
+                        "tokenizer":   tokenizer_type,
+                        "BLOCK_SIZE":  BLOCK_SIZE,
+                        "N_EMBD":      N_EMBD,
+                        "N_HEAD":      N_HEAD,
+                        "N_LAYER":     N_LAYER,
+                        "DROPOUT":     DROPOUT,
+                    }
+                torch.save(checkpoint, BEST_MODEL_PATH)
 
         xb, yb = get_batch("train", train_data, val_data)
 
